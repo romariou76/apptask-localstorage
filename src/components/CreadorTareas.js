@@ -1,13 +1,16 @@
 import { useState } from "react";
 
-function CreadorTareas() {
+function CreadorTareas({crearTarea}) {
 
-  const [nuevaTarea, setNuevaTarea] = useState();
+  // console.log(props)
+
+  const [nuevaTarea, setNuevaTarea] = useState('');
         //variable -  funcion
 
   // Manejando el evento de envio - recibimos el evento (e)
   const handleSubmit = (e) => {
     e.preventDefault(); // Cancele la actualizacion de la pagina
+    crearTarea(nuevaTarea)  // Antes de guardar, llamamos desde props la funcion crearTarea
     localStorage.setItem("tareas", nuevaTarea); //Hace el guardado en LocalStorage de la tarea que tipeo el usuario = clave - valor
     setNuevaTarea(""); // Una vez guardado limpiamos el input como string vacio
   };

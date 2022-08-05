@@ -11,7 +11,8 @@ function CreadorTareas({crearTarea}) {
   const handleSubmit = (e) => {
     e.preventDefault(); // Cancele la actualizacion de la pagina
     crearTarea(nuevaTarea)  // Antes de guardar, llamamos desde props la funcion crearTarea
-    localStorage.setItem("tareas", nuevaTarea); //Hace el guardado en LocalStorage de la tarea que tipeo el usuario = clave - valor
+    // localStorage.setItem("tareas", nuevaTarea);    //Hace el guardado en LocalStorage de la tarea y en la lista; que tipeo el usuario = clave - valor ,
+    // pero el valor no persiste por ello usaremos useEffect
     setNuevaTarea(""); // Una vez guardado limpiamos el input como string vacio
   };
 

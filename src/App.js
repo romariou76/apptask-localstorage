@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import CreadorTareas from "./components/CreadorTareas";
+import TablaTarea from "./components/TablaTarea";
 
 function App() {
   const [tareaItems, setTareaItems] = useState([])
@@ -19,12 +20,23 @@ function App() {
       alert('tarea ya agregada')
     }
   }
+
+  // Creamos esta funcion para actualizar una tarea(true, false)
+  // Funcion usada por TablaTarea porque tiene la lista de tareas
+  const actualizarTarea = (tarea) =>
+  setTareaItems(
+    // por cada una de las tareas recibimos los datos y vamos a compararlo
+    // Si la var que esta recorriendo es igual en su propiedad name es igual a tarea.name, vamos a considerarlo como que lo ha encontrado
+    tareaItems.map((t) => (t.name === tarea.name ? { ...t, done: !t.done } : t))
+    // sI SON IGUALES, si tiene su prop en true lo cambia a false y al revez, si no son iguales o no lo encuentra solo lo conserva que seria la tarea
+    // Esto al final devuelve un nuevo arreglo, que sera el nuevo arreglo de tareas seteado por setTareaItems
+    );
   
 // Cuando cargue la app iniclamente ejecutara este hook, si no le colocamos nada en el array, se ejecutara apenas la app cargue 
   useEffect(() => {
     // console.log('cargo')
     // leemos el localstorage y guardamso en la var data
-    let data = localStorage.getItem("tasks"); //Si existe datos vamos a convertirlo a su forma de javascript
+    let data = localStorage.getItem("tareas"); //Si existe datos vamos a convertirlo a su forma de javascript
     if (data) {
       setTareaItems(JSON.parse(data)); // Lo seteamos como el valor de la variabl que tiene todas las tareas
       // console.log(JSON.parse(data))
@@ -33,33 +45,14 @@ function App() {
 
   // El hook useEffect se ejecuta cada vez si un dato cambia
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tareaItems)) // Convertimos a string el array tareaItems
+    localStorage.setItem("tareas", JSON.stringify(tareaItems)) // Convertimos a string el array tareaItems
     // console.log('cambio')
   }, [ tareaItems ]) // Le pasamos el dato variable que va cambiando en este caso la lista(tareaItems), si cambia vuelve a ejecutar lo que esta dentro de la funcion
                     // Por lo tanto aqui seria el lugar correcto para guardarlo en el localStorage
   return (
     <div className="App">
       <CreadorTareas crearTarea={crearTarea}/>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Task</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            tareaItems.map(tarea => (// Por cada tarea que haya devuelva un tr con el nombre y cada tarea debe tener una clave unica en <tr>
-              <tr key={tarea.name}>
-                <td>
-                  {tarea.name}
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-
+      <TablaTarea tareas={tareaItems} actualizarTarea={actualizarTarea}/>
     </div>
   );
 }

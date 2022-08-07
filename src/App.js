@@ -52,7 +52,10 @@ function App() {
   return (
     <div className="App">
       <CreadorTareas crearTarea={crearTarea}/>
-      <TablaTarea tareas={tareaItems} actualizarTarea={actualizarTarea}/>
+      <TablaTarea tareas={tareaItems} actualizarTarea={actualizarTarea} mostrarTareaCompletadas={false}/>
+
+      {/* Vamos a usar la misma tabla para filtrar las tareas a partir de la propiedad done:false true */}
+      <TablaTarea tareas={tareaItems} actualizarTarea={actualizarTarea} mostrarTareaCompletadas={true} />
     </div>
   );
 }
